@@ -17,6 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://cdn.jsdelivr.net/npm/daisyui@4.7.3/dist/full.min.css"
+          rel="stylesheet"
+          type="text/css"
+        />
+      </head>
       <body className={inter.className}>
         <div className="flex h-screen">
           <div className="fixed top-0 left-0 h-screen w-[20rem]">

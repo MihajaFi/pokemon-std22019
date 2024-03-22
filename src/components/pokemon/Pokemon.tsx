@@ -1,17 +1,17 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
   Typography,
-  List,
-  ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
   Button,
 } from "@material-tailwind/react";
-import { PencilIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+
+import { PokemonDetails } from "@/components/pokemon/details/PokemonDetails";
 
 interface Pokemon {
   name: string;
@@ -36,7 +36,9 @@ export function Pokemon() {
   useEffect(() => {
     async function fetchPokemons() {
       const response = await axios.get<PokemonPage>(
-        `https://pokeapi.co/api/v2/pokemon?limit=${LIMIT}&offset=${OFFSET + (currentPage - 1) * LIMIT}`
+        `https://pokeapi.co/api/v2/pokemon?limit=${LIMIT}&offset=${
+          OFFSET + (currentPage - 1) * LIMIT
+        }`
       );
       setPokemons(response.data.results);
       setTotalPages(Math.ceil(response.data.count / LIMIT));
@@ -45,51 +47,36 @@ export function Pokemon() {
   }, [currentPage]);
 
   return (
-    <Card className="h-full w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
-      <List>
-        {pokemons.map((pokemon) => (
-          <ListItem key={pokemon.url}>
-            <ListItemPrefix>
-              <img
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                  pokemon.url.split("/")[6]
-                }.png`}
-                alt={pokemon.name}
-                className="h-10 w-10"
-              />
-            </ListItemPrefix>
-            <Link href={`/pokemon/${pokemon.name}`} passHref>
-              <Typography
-                variant="h6"
-                color="blue-gray"
-                className="cursor-pointer font-medium"
-              >
-                {pokemon.name}
-              </Typography>
-            </Link>
-            <ListItemSuffix>
-              <Button variant="text" color="blue-gray" size="sm" className="flex items-center gap-1">
-                <PencilIcon className="h-4 w-4" />
-                Détails
-              </Button>
-            </ListItemSuffix>
-          </ListItem>
-        ))}
-      </List>
-      <div className="mt-4">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <Button
-            key={page}
-            variant="text"
-            color="blue-gray"
-            size="sm"
-            className={`${page === currentPage ? "font-bold" : ""}`}
-            onClick={() => setCurrentPage(page)}
-          >
-            {page}
-          </Button>
-        ))}
-      </div>
-    </Card>
+    <div className="grid grid-cols-3 gap-6">
+      {pokemons.map((pokemon) => (
+        <div
+          key={pokemon.url}
+          className="card card-compact w-96 bg-base-100 shadow-xl"
+        >
+          <figure>
+            <img
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                pokemon.url.split("/")[6]
+              }.png`}
+              alt={pokemon.name}
+            />
+          </figure>
+          <div className="card-body">
+            <h1>{pokemon.name}</h1>
+
+            <p>
+              The place isclose to Barceloneta Beach and bus stop just 2 min by
+              walk and near to &quot;Naviglio&quot; where you can enjoy the main
+              night life in Barcelona.
+            </p>
+            <div className="card-actions justify-end">
+              <Link href={`/details/${pokemon.url.split("/")[6]}`}>
+                <button>Details</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
