@@ -1,17 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
-import Link from "next/link";
 
-import { PokemonDetails } from "@/components/pokemon/details/PokemonDetails";
+import Link from "next/link";
 
 interface Pokemon {
   name: string;
